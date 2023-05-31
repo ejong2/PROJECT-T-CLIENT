@@ -1,15 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MyTcpClient.h"
+
+#include "TCPModule.h"
 #include "Networking.h"
 #include "SocketSubsystem.h"
+#include "TCPPacketStructs.h"
 
-UMyTcpClient::UMyTcpClient()
+UTCPModule::UTCPModule()
 	: ClientSocket(nullptr)
 {
 }
 
-bool UMyTcpClient::ConnectToServer(FString IP, int32 Port)
+bool UTCPModule::ConnectToServer(FString IP, int32 Port)
 {
 	ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
 	TSharedRef<FInternetAddr> Addr = SocketSubsystem->CreateInternetAddr();
@@ -36,7 +38,7 @@ bool UMyTcpClient::ConnectToServer(FString IP, int32 Port)
 	return true;
 }
 
-void UMyTcpClient::Disconnect()
+void UTCPModule::Disconnect()
 {
 	if (ClientSocket)
 	{
@@ -44,4 +46,15 @@ void UMyTcpClient::Disconnect()
 		ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(ClientSocket);
 		ClientSocket = nullptr;
 	}
+}
+
+void UTCPModule::SendLoginPacket(FString Id, FString Password)
+{
+	MessageReqLogin Message;
+	Message.MessageID = (int)EMessageID::C2S_REQ_SIGNUP;
+	Message.MessageSize = sizeof(MessageReqLogin);
+	FMemory::Memcpy(Message.USER_ID, TCHAR_TO_ANSI(*Id), Id.Len());
+	FMemory::Memcpy(Message.USER_PASSWORD, TCHAR_TO_ANSI(*Password), Password.Len());
+	int Flags = 0;
+	ClientSocket->Send((const uint8*)&Message, Message.MessageSize, Flags);
 }
