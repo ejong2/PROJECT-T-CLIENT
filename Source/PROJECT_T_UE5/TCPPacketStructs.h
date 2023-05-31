@@ -41,7 +41,9 @@ struct MessageReqSignup : public MessageHeader
 };
 struct MessageReqLogin : public MessageHeader
 {
+	
 	char USER_ID[32];
 	char USER_PASSWORD[32];
+
 };
 #pragma pack(pop)

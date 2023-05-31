@@ -48,13 +48,29 @@ void UTCPModule::Disconnect()
 	}
 }
 
-void UTCPModule::SendLoginPacket(FString Id, FString Password)
+void UTCPModule::SendLoginPacket(bool bIsLogin,FString Id, FString Password)
 {
 	MessageReqLogin Message;
-	Message.MessageID = (int)EMessageID::C2S_REQ_SIGNUP;
+
+	FMemory::Memset(&Message, 0, sizeof(Message));
+
+	if (bIsLogin)
+	{
+		Message.MessageID = (int)EMessageID::C2S_REQ_LOGIN;
+	}
+	else
+	{
+		Message.MessageID = (int)EMessageID::C2S_REQ_SIGNUP;
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("%d"), Message.MessageID);
+	
 	Message.MessageSize = sizeof(MessageReqLogin);
+	
 	FMemory::Memcpy(Message.USER_ID, TCHAR_TO_ANSI(*Id), Id.Len());
 	FMemory::Memcpy(Message.USER_PASSWORD, TCHAR_TO_ANSI(*Password), Password.Len());
+	
 	int Flags = 0;
+
 	ClientSocket->Send((const uint8*)&Message, Message.MessageSize, Flags);
 }

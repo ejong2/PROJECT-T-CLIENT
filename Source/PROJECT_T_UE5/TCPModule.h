@@ -18,7 +18,7 @@ public:
 
 	bool ConnectToServer(FString IP, int32 Port);
 	void Disconnect();
-	void SendLoginPacket(FString Id, FString Password);
+	void SendLoginPacket(bool bIsLogin,FString Id, FString Password);
 private:
 	FSocket* ClientSocket;
 };
