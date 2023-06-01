@@ -73,4 +73,16 @@ void UTCPModule::SendLoginPacket(bool bIsLogin,FString Id, FString Password)
 	int Flags = 0;
 
 	ClientSocket->Send((const uint8*)&Message, Message.MessageSize, Flags);
+
+	MessageResPlayer response;
+	int32 BytesReceive;
+	ClientSocket->Recv((uint8*)&response, sizeof(MessageResPlayer), BytesReceive);
+
+	UE_LOG(LogTemp, Warning, TEXT("MessageID : %d"), response.MsgHead.MessageID);
+	UE_LOG(LogTemp, Warning, TEXT("EProcessFlag : %d"), response.PROCESS_FLAG);
+}
+
+void UTCPModule::ReceivePacket()
+{
+
 }
