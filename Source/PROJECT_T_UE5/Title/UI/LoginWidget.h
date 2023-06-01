@@ -18,12 +18,19 @@ public:
 
 	UFUNCTION()
 		void OnLoginButtonClicked();
+
+	UFUNCTION()
+		void OnChangeCheckBoxValue(bool bIsCheck);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		class UEditableTextBox* IdInputTextBox;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		class UEditableTextBox* PasswordInputTextBox;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 		class UButton* LoginButton;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		class UCheckBox* IsLoginCheckBox;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		class UTextBlock* ButtonTextBlock;
 private:
 
 };
